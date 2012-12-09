@@ -1,0 +1,13 @@
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\bin\Debug\OliviaTrelloControl.exe.config
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\bin\Debug\OliviaTrelloControl.exe
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\bin\Debug\OliviaTrelloControl.pdb
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl.csprojResolveAssemblyReference.cache
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\MainWindow.baml
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\MainWindow.g.cs
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\App.g.cs
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl_MarkupCompile.cache
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl.g.resources
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl.Properties.Resources.resources
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl.csproj.GenerateResource.Cache
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl.exe
+C:\Dev\TrelloController\OliviaTrelloControl\OliviaTrelloControl\obj\Debug\OliviaTrelloControl.pdb
