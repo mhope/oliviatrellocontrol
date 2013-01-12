@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace OliviaTrelloControl
+namespace OliviaTrelloControl.Mouse
 {
     [Flags]
     internal enum MouseEventDataXButtons : uint
@@ -18,19 +18,19 @@ namespace OliviaTrelloControl
     internal enum MOUSEEVENTF : uint
     {
         ABSOLUTE = 0x8000,
-        HWHEEL = 0x01000,
+        HWHEEL = 0x02000,
         MOVE = 0x0001,
         MOVE_NOCOALESCE = 0x2000,
         LEFTDOWN = 0x0002,
         LEFTUP = 0x0004,
         RIGHTDOWN = 0x0008,
-        RIGHTUP = 0x0010,
+        RIGHTUP = 0x0020,
         MIDDLEDOWN = 0x0020,
         MIDDLEUP = 0x0040,
         VIRTUALDESK = 0x4000,
         WHEEL = 0x0800,
         XDOWN = 0x0080,
-        XUP = 0x0100
+        XUP = 0x0200
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -90,6 +90,64 @@ namespace OliviaTrelloControl
                 leftClickDown = false;
             }
 
+            SendInput(inputs.Length, inputs, INPUT.Size);
+        }
+
+        public static void DragMouse(int dx, int dy)
+        {
+            LeftDown();
+            System.Threading.Thread.Sleep(20);
+            Move(0, 3);
+            System.Threading.Thread.Sleep(20);
+            Move(0, 3);
+            System.Threading.Thread.Sleep(20);
+            Move(0, 3);
+            System.Threading.Thread.Sleep(20);
+            Move(0, 3);
+            System.Threading.Thread.Sleep(1000);
+
+            Move(0,10);
+            System.Threading.Thread.Sleep(20);
+            Move(0,10);
+            System.Threading.Thread.Sleep(20);
+            Move(0,10);
+            System.Threading.Thread.Sleep(20);
+            Move(0,10);
+            System.Threading.Thread.Sleep(20);
+            Move(0, 20);
+            System.Threading.Thread.Sleep(1000);
+
+            LeftUp();
+        }
+
+        public static void Move(int dx, int dy)
+        {
+            INPUT[] inputs = new INPUT[1];
+
+            inputs[0] = new INPUT();
+            inputs[0].type = 0;
+            inputs[0].mi.dx = dx;
+            inputs[0].mi.dy = dy;
+            inputs[0].mi.dwFlags = MOUSEEVENTF.MOVE;
+
+            SendInput(inputs.Length, inputs, INPUT.Size);
+        }
+
+        public static void LeftDown()
+        {    
+            INPUT[] inputs = new INPUT[1];
+            inputs[0] = new INPUT();
+            inputs[0].type = 0;
+            inputs[0].mi.dwFlags = MOUSEEVENTF.LEFTDOWN;
+            SendInput(inputs.Length, inputs, INPUT.Size);
+        }
+
+        public static void LeftUp()
+        {
+            INPUT[] inputs = new INPUT[1];
+            inputs[0] = new INPUT();
+            inputs[0].type = 0;
+            inputs[0].mi.dwFlags = MOUSEEVENTF.LEFTUP;
             SendInput(inputs.Length, inputs, INPUT.Size);
         }
     }
