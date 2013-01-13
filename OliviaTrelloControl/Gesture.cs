@@ -18,7 +18,7 @@ namespace OliviaTrelloControl.Gestures
 
     public static class GestureExtensions
     {
-        private static int CARD_HEIGHT = 60;
+        private static int CARD_HEIGHT = 30;
         public static void MouseAction(this Gesture gesture)
         {
             switch (gesture)

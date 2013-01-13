@@ -21,7 +21,7 @@ namespace OliviaTrelloControl
         }
         System.Timers.Timer timer;
         KinectSensor kinectSensor;
-        private double TIMER_DELAY = 800;
+        private double TIMER_DELAY = 300;
 
         private GestureFinder gestureFinder;
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -67,7 +67,7 @@ namespace OliviaTrelloControl
                 {
                     kinectSensor = kinect;
                     kinectSensor.SkeletonStream.EnableTrackingInNearRange = true;
-                    kinectSensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated;
+                    kinectSensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
                     kinectSensor.SkeletonStream.Enable(new TransformSmoothParameters
                                                    {
                                                  Smoothing = 0.5f,

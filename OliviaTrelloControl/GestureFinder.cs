@@ -12,6 +12,7 @@ namespace OliviaTrelloControl.Gestures
     {
         private bool hasBeenExtended = false;
         private  bool mousePressed = false;
+        private int gestureCount = 0;
 
         public Gesture GetGesture(Skeleton skeleton)
         {
@@ -20,38 +21,71 @@ namespace OliviaTrelloControl.Gestures
             SkeletonPoint rightShoulder;
             GetArmFrom(skeleton, out rightElbow, out rightHand, out rightShoulder);
 
-            // not interacting if hand not raise
+            System.Diagnostics.Debug.WriteLine("#Processing gesture" + ++gestureCount);
+            System.Diagnostics.Debug.WriteLine(" - Shoulder: Y=" + Math.Round(rightShoulder.Y, 2) + ", Z=" + Math.Round(rightShoulder.Z, 2));
+            System.Diagnostics.Debug.WriteLine(" - Elbow: Y=" + Math.Round(rightElbow.Y, 2) + ", Z=" + Math.Round(rightElbow.Z, 2));
+            System.Diagnostics.Debug.WriteLine(" - Hand: Y=" + Math.Round(rightHand.Y, 2) + ", Z=" + Math.Round(rightHand.Z, 2));
 
-            if (rightShoulder.Z - rightHand.Z < 0.2)
+            System.Diagnostics.Debug.Write("# S<->H: " + Math.Round(rightShoulder.Y - rightHand.Y, 2));
+            System.Diagnostics.Debug.Write(", H<->E: " + Math.Round(rightHand.Y - rightElbow.Y, 2));
+            System.Diagnostics.Debug.Write(", E<->H: " + Math.Round(rightElbow.Y - rightHand.Y, 2));
+            System.Diagnostics.Debug.Write("\n");
+
+            // not interacting if hand not raise
+            if ((rightHand.Y == 0 && rightHand.Z == 0) || rightShoulder.Y - rightHand.Y > 0.5)
             {
-                if (IsArmExtended(skeleton)) {
-                    hasBeenExtended = true;
-                    return Gesture.None;
-                } else if (IsArmRetracted(skeleton)){ 
+                return Gesture.NotInteracting;
+            }
+
+            System.Diagnostics.Debug.Print("\t\tInteracting");
+            if (IsArmExtended(skeleton))
+            {
+                System.Diagnostics.Debug.Print("\t\t\t\tExtended");
+                hasBeenExtended = true;
+                return Gesture.None;
+            }
+            else if (IsArmRetracted(skeleton))
+            {
+                if (hasBeenExtended)
+                {
                     hasBeenExtended = false;
                     if (!mousePressed)
                     {
+                        System.Diagnostics.Debug.Print("\t\t\t\tRetracted - picking up");
                         mousePressed = true;
                         return Gesture.PickUp;
                     }
                     else
                     {
+                        System.Diagnostics.Debug.Print("\t\t\t\tRetracted - putting down");
                         mousePressed = false;
                         return Gesture.PutDown;
                     }
                 }
+                else
+                {
+                    return FindMovementGesture(ref rightElbow, ref rightHand);
+                }
             }
-
-            if (rightHand.Y - rightElbow.Y > 0.2)
+            else
             {
+                return FindMovementGesture(ref rightElbow, ref rightHand);
+            }
+        }
+
+        private static Gesture FindMovementGesture(ref SkeletonPoint rightElbow, ref SkeletonPoint rightHand)
+        {
+            if (rightHand.Y - rightElbow.Y > 0.1)
+            {
+                System.Diagnostics.Debug.Print("\t\t\tHand Up");
                 return Gesture.HandUp;
             }
-            if (rightElbow.Y - rightHand.Y > 0.2)
+            if (rightElbow.Y - rightHand.Y > 0.1)
             {
+                System.Diagnostics.Debug.Print("\t\t\tHand Down");
                 return Gesture.HandDown;
             }
             return Gesture.None;
-
         }
 
         private static void GetArmFrom(Skeleton skeleton, out SkeletonPoint rightElbow, out SkeletonPoint rightHand, out SkeletonPoint rightShoulder)
@@ -63,13 +97,31 @@ namespace OliviaTrelloControl.Gestures
 
         private static bool IsArmExtended(Skeleton skeleton)
         {
-            return  DistanceFromStraightArm(skeleton)  < 0.01;
+            //double distance =  DistanceFromStraightArm(skeleton);
+            //System.Diagnostics.Debug.WriteLine("$e" + Math.Round(distance, 2));
+            //return distance < 0.05;
+            SkeletonPoint rightElbow;
+            SkeletonPoint rightShoulder;
+            SkeletonPoint rightHand;
+            GetArmFrom(skeleton, out rightElbow, out rightHand, out rightShoulder);
+
+
+            return rightHand.Z < 0.9;
         }
 
 
         private static bool IsArmRetracted(Skeleton skeleton)
         {
-            return DistanceFromStraightArm(skeleton) > 0.1;
+            //double distance = DistanceFromStraightArm(skeleton);
+            //System.Diagnostics.Debug.WriteLine("$r" + Math.Round(distance, 2));
+            //return distance > 0.1;
+            SkeletonPoint rightElbow;
+            SkeletonPoint rightShoulder;
+            SkeletonPoint rightHand;
+            GetArmFrom(skeleton, out rightElbow, out rightHand, out rightShoulder);
+
+
+            return rightHand.Z > 1.0;
         }
         
 
